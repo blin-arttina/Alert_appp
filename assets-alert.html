@@ -132,14 +132,7 @@
 
     <div class="alerts">
       <h3>My Active Alerts</h3>
-      <div class="alert-item">
-        <span>BTC @ $50,000</span>
-        <button>Disable</button>
-      </div>
-      <div class="alert-item">
-        <span>ETH @ $4,000</span>
-        <button>Disable</button>
-      </div>
+      <div id="alertsList"></div>
     </div>
   </div>
 
@@ -147,5 +140,44 @@
     <p>Presented by Blind Art</p>
     <img src="blind_art_logo.png" alt="Blind Art Logo">
   </footer>
+
+  <script>
+    const alertForm = document.getElementById('alertForm');
+    const alertsList = document.getElementById('alertsList');
+
+    function loadAlerts() {
+      alertsList.innerHTML = "";
+      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
+      alerts.forEach((alert, index) => {
+        const div = document.createElement('div');
+        div.className = 'alert-item';
+        div.innerHTML = `<span>${alert.symbol} @ $${alert.price}</span>
+                         <button onclick="removeAlert(${index})">Disable</button>`;
+        alertsList.appendChild(div);
+      });
+    }
+
+    function removeAlert(index) {
+      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
+      alerts.splice(index, 1);
+      localStorage.setItem('alerts', JSON.stringify(alerts));
+      loadAlerts();
+    }
+
+    alertForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const symbol = document.getElementById('symbol').value.trim().toUpperCase();
+      const price = document.getElementById('targetPrice').value.trim();
+
+      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
+      alerts.push({ symbol, price });
+      localStorage.setItem('alerts', JSON.stringify(alerts));
+      loadAlerts();
+
+      alertForm.reset();
+    });
+
+    loadAlerts();
+  </script>
 </body>
 </html>
