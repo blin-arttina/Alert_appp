@@ -16,11 +16,28 @@
     header {
       display: flex;
       align-items: center;
+      justify-content: flex-start;
       padding: 1rem 2rem;
       background-color: #111;
     }
     header img {
       height: 60px;
+      margin-right: 1rem;
+    }
+    .header-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .header-text h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #f33;
+    }
+    .header-text h2 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
     }
     .container {
       max-width: 600px;
@@ -54,6 +71,25 @@
     button:hover {
       background-color: #c00;
     }
+    .alerts {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background-color: #333;
+    }
+    .alerts h3 {
+      margin-top: 0;
+    }
+    .alert-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #555;
+    }
+    .alert-item:last-child {
+      border-bottom: none;
+    }
     footer {
       text-align: center;
       padding: 2rem;
@@ -73,7 +109,12 @@
 <body>
   <header>
     <img src="alert_logo.png" alt="Assets Alert Logo">
+    <div class="header-text">
+      <h1>Assets Alert</h1>
+      <h2>Welcome</h2>
+    </div>
   </header>
+
   <div class="container">
     <form id="alertForm">
       <label for="symbol">Crypto/Stock Symbol</label>
@@ -88,7 +129,20 @@
       <button type="submit">Set Alert</button>
     </form>
     <p id="status"></p>
+
+    <div class="alerts">
+      <h3>My Active Alerts</h3>
+      <div class="alert-item">
+        <span>BTC @ $50,000</span>
+        <button>Disable</button>
+      </div>
+      <div class="alert-item">
+        <span>ETH @ $4,000</span>
+        <button>Disable</button>
+      </div>
+    </div>
   </div>
+
   <footer>
     <p>Presented by Blind Art</p>
     <img src="blind_art_logo.png" alt="Blind Art Logo">
