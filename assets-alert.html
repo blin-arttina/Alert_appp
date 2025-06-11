@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assets Alert Web App</title>
+  <title>Assets Alert Web App (Hybrid)</title>
   <style>
     body { background-color: #111; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
     header { display: flex; align-items: center; padding: 1rem 2rem; background-color: #111; }
@@ -36,8 +36,8 @@
 
   <div class="container">
     <form id="alertForm">
-      <label for="symbol">Crypto Symbol (BTC, ETH, DOGE)</label>
-      <input type="text" id="symbol" placeholder="e.g. BTC, ETH" required />
+      <label for="symbol">Crypto or Stock Symbol (BTC, ETH, TSLA, AAPL, etc)</label>
+      <input type="text" id="symbol" placeholder="e.g. BTC, ETH, TSLA" required />
       <label for="targetPrice">Alert Me When Price Is Above</label>
       <input type="number" id="targetPrice" step="0.01" required />
       <label for="audioFile">Upload Custom Alert Sound</label>
@@ -54,6 +54,7 @@
   <script>
     const alertForm = document.getElementById('alertForm');
     const alertsList = document.getElementById('alertsList');
+    const cryptoList = ["btc","eth","doge","ltc","sol","ada","xrp","shib"];
 
     function loadAlerts() {
       alertsList.innerHTML = "";
@@ -96,18 +97,35 @@
       for (let index in alerts) {
         let alert = alerts[index];
         try {
-          const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${alert.symbol}&vs_currencies=usd`);
-          const data = await response.json();
-          const price = data[alert.symbol]?.usd;
-          if (price) {
-            document.getElementById(`live-${index}`).innerText = `Current: $${price}`;
-            if (price >= alert.price) {
-              alertUser(alert.symbol.toUpperCase(), price, alert.price);
-            }
+          const lowerSymbol = alert.symbol.toLowerCase();
+          if (cryptoList.includes(lowerSymbol)) {
+            // crypto via CoinGecko
+            const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${lowerSymbol}&vs_currencies=usd`);
+            const data = await response.json();
+            const price = data[lowerSymbol]?.usd;
+            updatePrice(index, price, alert, lowerSymbol);
           } else {
-            document.getElementById(`live-${index}`).innerText = `Current: Symbol Not Found`;
+            // stock via Yahoo
+            const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${alert.symbol.toUpperCase()}`);
+            const data = await response.json();
+            const price = data.quoteResponse.result[0]?.regularMarketPrice;
+            updatePrice(index, price, alert, lowerSymbol);
           }
-        } catch (err) { console.error("Error fetching price:", err); }
+        } catch (err) {
+          console.error("Error fetching price:", err);
+          document.getElementById(`live-${index}`).innerText = `Error fetching`;
+        }
+      }
+    }
+
+    function updatePrice(index, price, alert, symbol) {
+      if (price) {
+        document.getElementById(`live-${index}`).innerText = `Current: $${price}`;
+        if (price >= alert.price) {
+          alertUser(symbol.toUpperCase(), price, alert.price);
+        }
+      } else {
+        document.getElementById(`live-${index}`).innerText = `Symbol Not Found`;
       }
     }
 
