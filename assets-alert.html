@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assets Alert Web App</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #111;
+    }
+    header img {
+      height: 60px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      border: 1px solid #666;
+      border-radius: 8px;
+      padding: 1.5rem;
+      background-color: #222;
+      margin-top: 2rem;
+    }
+    label, input, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    input, select {
+      padding: 0.5rem;
+      background: #333;
+      border: 1px solid #555;
+      color: white;
+    }
+    button {
+      background-color: #f33;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #c00;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: #111;
+      border-top: 1px solid #333;
+    }
+    footer p {
+      margin: 0.5rem 0;
+      color: #ccc;
+    }
+    footer img {
+      height: 60px;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="alert_logo.png" alt="Assets Alert Logo">
+  </header>
+  <div class="container">
+    <form id="alertForm">
+      <label for="symbol">Crypto/Stock Symbol</label>
+      <input type="text" id="symbol" placeholder="e.g. BTC, ETH, TSLA" required />
+
+      <label for="targetPrice">Alert Me When Price Is Above</label>
+      <input type="number" id="targetPrice" step="0.01" required />
+
+      <label for="audioFile">Upload Custom Alert Sound</label>
+      <input type="file" id="audioFile" accept="audio/*" required />
+
+      <button type="submit">Set Alert</button>
+    </form>
+    <p id="status"></p>
+  </div>
+  <footer>
+    <p>Presented by Blind Art</p>
+    <img src="blind_art_logo.png" alt="Blind Art Logo">
+  </footer>
+</body>
+</html>
