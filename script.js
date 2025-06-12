@@ -1,6 +1,8 @@
 
 const alertForm = document.getElementById('alertForm');
 const alertsList = document.getElementById('alertsList');
+const testSoundBtn = document.getElementById('testSound');
+const clearAlertsBtn = document.getElementById('clearAlerts');
 
 const coinGeckoMap = {
   btc: "bitcoin",
@@ -23,6 +25,22 @@ document.getElementById('audioFile').addEventListener('change', function() {
     localStorage.setItem('alertSound', soundBase64);
   }
   reader.readAsDataURL(file);
+});
+
+testSoundBtn.addEventListener('click', () => {
+  if (soundBase64) {
+    const audio = new Audio(soundBase64);
+    audio.play();
+  } else {
+    alert("No sound uploaded yet.");
+  }
+});
+
+clearAlertsBtn.addEventListener('click', () => {
+  if (confirm("Are you sure you want to clear all alerts?")) {
+    localStorage.removeItem('alerts');
+    loadAlerts();
+  }
 });
 
 function loadAlerts() {

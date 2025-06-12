@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assets Alert Web App (Phase 6 - Sound Engine)</title>
+  <title>Assets Alert Web App (Phase 7)</title>
   <style>
     body { background-color: #111; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
     header { display: flex; align-items: center; padding: 1rem 2rem; background-color: #111; }
@@ -19,6 +19,7 @@
     button { background-color: #f33; color: white; border: none; padding: 0.75rem; font-size: 1rem;
              cursor: pointer; border-radius: 4px; }
     button:hover { background-color: #c00; }
+    .btn-small { width: auto; padding: 0.5rem 1rem; font-size: 0.9rem; margin: 0.5rem 0; }
     .alerts { margin-top: 2rem; padding: 1rem; border: 1px solid #555; border-radius: 8px; background-color: #333; }
     .alerts h3 { margin-top: 0; }
     .alert-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #555; }
@@ -31,7 +32,7 @@
   </style>
 </head>
 <body>
-  <header><img src="alert_logo.png?v=8" alt="Assets Alert Logo">
+  <header><img src="alert_logo.png?v=9" alt="Assets Alert Logo">
     <div class="header-text"><h1>Assets Alert</h1><h2>Welcome</h2></div></header>
 
   <div class="container">
@@ -44,13 +45,15 @@
       <input type="file" id="audioFile" accept="audio/*" required />
       <button type="submit">Set Alert</button>
     </form>
-    <p id="status"></p>
+
+    <button id="testSound" class="btn-small">Test Sound</button>
+    <button id="clearAlerts" class="btn-small">Clear All Alerts</button>
 
     <div class="alerts"><h3>My Active Alerts</h3><div id="alertsList"></div></div>
   </div>
 
-  <footer><p>Presented by Blind Art</p><img src="blind_art_logo.png?v=8" alt="Blind Art Logo"></footer>
+  <footer><p>Presented by Blind Art</p><img src="blind_art_logo.png?v=9" alt="Blind Art Logo"></footer>
 
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>
