@@ -13,6 +13,18 @@ const coinGeckoMap = {
   shib: "shiba-inu"
 };
 
+let soundBase64 = localStorage.getItem('alertSound') || null;
+
+document.getElementById('audioFile').addEventListener('change', function() {
+  const file = this.files[0];
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    soundBase64 = reader.result;
+    localStorage.setItem('alertSound', soundBase64);
+  }
+  reader.readAsDataURL(file);
+});
+
 function loadAlerts() {
   alertsList.innerHTML = "";
   const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
@@ -87,6 +99,10 @@ function updatePrice(index, price, alert, symbol) {
 
 function alertUser(symbol, livePrice, targetPrice) {
   alert(`${symbol} has reached $${livePrice} (Target: $${targetPrice})`);
+  if (soundBase64) {
+    const audio = new Audio(soundBase64);
+    audio.play();
+  }
 }
 
 loadAlerts();
