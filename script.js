@@ -1,7 +1,17 @@
 
 const alertForm = document.getElementById('alertForm');
 const alertsList = document.getElementById('alertsList');
-const cryptoList = ["btc","eth","doge","ltc","sol","ada","xrp","shib"];
+
+const coinGeckoMap = {
+  btc: "bitcoin",
+  eth: "ethereum",
+  doge: "dogecoin",
+  ltc: "litecoin",
+  sol: "solana",
+  ada: "cardano",
+  xrp: "ripple",
+  shib: "shiba-inu"
+};
 
 function loadAlerts() {
   alertsList.innerHTML = "";
@@ -45,10 +55,11 @@ async function checkPrices() {
     let alert = alerts[index];
     try {
       const lowerSymbol = alert.symbol.toLowerCase();
-      if (cryptoList.includes(lowerSymbol)) {
-        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${lowerSymbol}&vs_currencies=usd`);
+      if (coinGeckoMap[lowerSymbol]) {
+        const id = coinGeckoMap[lowerSymbol];
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`);
         const data = await response.json();
-        const price = data[lowerSymbol]?.usd;
+        const price = data[id]?.usd;
         updatePrice(index, price, alert, lowerSymbol);
       } else {
         const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${alert.symbol.toUpperCase()}`);
