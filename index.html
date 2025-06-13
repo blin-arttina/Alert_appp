@@ -4,180 +4,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assets Alert Web App</title>
+  <title>Assets Alert Web App (Phase 9)</title>
   <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 1rem 2rem;
-      background-color: #111;
-    }
-    header img {
-      height: 60px;
-      margin-right: 1rem;
-    }
-    .header-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .header-text h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: #f33;
-    }
-    .header-text h2 {
-      margin: 0;
-      font-size: 1rem;
-      color: #fff;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      border: 1px solid #666;
-      border-radius: 8px;
-      padding: 1.5rem;
-      background-color: #222;
-      margin-top: 2rem;
-    }
-    label, input, select, button {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    input, select {
-      padding: 0.5rem;
-      background: #333;
-      border: 1px solid #555;
-      color: white;
-    }
-    button {
-      background-color: #f33;
-      color: white;
-      border: none;
-      padding: 0.75rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    button:hover {
-      background-color: #c00;
-    }
-    .alerts {
-      margin-top: 2rem;
-      padding: 1rem;
-      border: 1px solid #555;
-      border-radius: 8px;
-      background-color: #333;
-    }
-    .alerts h3 {
-      margin-top: 0;
-    }
-    .alert-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #555;
-    }
-    .alert-item:last-child {
-      border-bottom: none;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background-color: #111;
-      border-top: 1px solid #333;
-    }
-    footer p {
-      margin: 0.5rem 0;
-      color: #ccc;
-    }
-    footer img {
-      height: 60px;
-      margin-top: 0.5rem;
-    }
+    body { background-color: #111; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { text-align: center; padding: 1rem 0; background-color: #111; }
+    header img { height: 60px; margin-bottom: 1rem; }
+    .header-text h1 { margin: 0; font-size: 1.8rem; color: #f33; }
+    .header-text h2 { margin: 0; font-size: 1rem; color: #fff; }
+    .container { max-width: 600px; margin: auto; border: 1px solid #666; border-radius: 8px;
+                 padding: 1.5rem; background-color: #222; margin-top: 2rem; }
+    label, input, select, button { display: block; width: 100%; margin-bottom: 1rem; }
+    input, select { padding: 0.5rem; background: #333; border: 1px solid #555; color: white; }
+    button { background-color: #f33; color: white; border: none; padding: 0.75rem; font-size: 1rem;
+             cursor: pointer; border-radius: 4px; }
+    button:hover { background-color: #c00; }
+    .btn-small { width: auto; padding: 0.5rem 1rem; font-size: 0.9rem; margin: 0.5rem 0; }
+    .alerts { margin-top: 2rem; padding: 1rem; border: 1px solid #555; border-radius: 8px; background-color: #333; }
+    .alerts h3 { margin-top: 0; }
+    .alert-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #555; }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-info { display: flex; flex-direction: column; align-items: flex-start; }
+    .disable-btn { width: auto; padding: 0.3rem 0.75rem; font-size: 0.9rem; }
+    footer { text-align: center; padding: 2rem; background-color: #111; border-top: 1px solid #333; }
+    footer p { margin: 0.5rem 0; color: #ccc; }
+    footer img { height: 60px; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
   <header>
-    <img src="alert_logo.png" alt="Assets Alert Logo">
-    <div class="header-text">
-      <h1>Assets Alert</h1>
-      <h2>Welcome</h2>
-    </div>
+    <img src="alert_logo.png?v=11" alt="Assets Alert Logo">
+    <div class="header-text"><h1>Assets Alert</h1><h2>Welcome</h2></div>
   </header>
 
   <div class="container">
     <form id="alertForm">
-      <label for="symbol">Crypto/Stock Symbol</label>
+      <label for="symbol">Crypto or Stock Symbol (BTC, ETH, TSLA, AAPL, etc)</label>
       <input type="text" id="symbol" placeholder="e.g. BTC, ETH, TSLA" required />
-
       <label for="targetPrice">Alert Me When Price Is Above</label>
       <input type="number" id="targetPrice" step="0.01" required />
-
       <label for="audioFile">Upload Custom Alert Sound</label>
       <input type="file" id="audioFile" accept="audio/*" required />
-
       <button type="submit">Set Alert</button>
     </form>
-    <p id="status"></p>
 
-    <div class="alerts">
-      <h3>My Active Alerts</h3>
-      <div id="alertsList"></div>
-    </div>
+    <button id="testSound" class="btn-small">Test Sound</button>
+    <button id="clearAlerts" class="btn-small">Clear All Alerts</button>
+
+    <div class="alerts"><h3>My Active Alerts</h3><div id="alertsList"></div></div>
   </div>
 
-  <footer>
-    <p>Presented by Blind Art</p>
-    <img src="blind_art_logo.png" alt="Blind Art Logo">
-  </footer>
+  <footer><p>Presented by Blind Art</p><img src="blind_art_logo.png?v=11" alt="Blind Art Logo"></footer>
 
-  <script>
-    const alertForm = document.getElementById('alertForm');
-    const alertsList = document.getElementById('alertsList');
-
-    function loadAlerts() {
-      alertsList.innerHTML = "";
-      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
-      alerts.forEach((alert, index) => {
-        const div = document.createElement('div');
-        div.className = 'alert-item';
-        div.innerHTML = `<span>${alert.symbol} @ $${alert.price}</span>
-                         <button onclick="removeAlert(${index})">Disable</button>`;
-        alertsList.appendChild(div);
-      });
-    }
-
-    function removeAlert(index) {
-      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
-      alerts.splice(index, 1);
-      localStorage.setItem('alerts', JSON.stringify(alerts));
-      loadAlerts();
-    }
-
-    alertForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const symbol = document.getElementById('symbol').value.trim().toUpperCase();
-      const price = document.getElementById('targetPrice').value.trim();
-
-      const alerts = JSON.parse(localStorage.getItem('alerts') || "[]");
-      alerts.push({ symbol, price });
-      localStorage.setItem('alerts', JSON.stringify(alerts));
-      loadAlerts();
-
-      alertForm.reset();
-    });
-
-    loadAlerts();
-  </script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>
