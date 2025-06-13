@@ -16,6 +16,8 @@ const coinGeckoMap = {
 };
 
 let soundBase64 = localStorage.getItem('alertSound') || null;
+let triggeredAlerts = JSON.parse(localStorage.getItem('triggeredAlerts') || "[]");
+let currentAudio = null;
 
 document.getElementById('audioFile').addEventListener('change', function() {
   const file = this.files[0];
@@ -29,8 +31,7 @@ document.getElementById('audioFile').addEventListener('change', function() {
 
 testSoundBtn.addEventListener('click', () => {
   if (soundBase64) {
-    const audio = new Audio(soundBase64);
-    audio.play();
+    playSound();
   } else {
     alert("No sound uploaded yet.");
   }
@@ -39,6 +40,8 @@ testSoundBtn.addEventListener('click', () => {
 clearAlertsBtn.addEventListener('click', () => {
   if (confirm("Are you sure you want to clear all alerts?")) {
     localStorage.removeItem('alerts');
+    localStorage.removeItem('triggeredAlerts');
+    triggeredAlerts = [];
     loadAlerts();
   }
 });
@@ -85,17 +88,18 @@ async function checkPrices() {
     let alert = alerts[index];
     try {
       const lowerSymbol = alert.symbol.toLowerCase();
+      const uniqueKey = `${lowerSymbol}_${alert.price}`;
       if (coinGeckoMap[lowerSymbol]) {
         const id = coinGeckoMap[lowerSymbol];
         const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`);
         const data = await response.json();
         const price = data[id]?.usd;
-        updatePrice(index, price, alert, lowerSymbol);
+        updatePrice(index, price, alert, lowerSymbol, uniqueKey);
       } else {
         const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${alert.symbol.toUpperCase()}`);
         const data = await response.json();
         const price = data.quoteResponse.result[0]?.regularMarketPrice;
-        updatePrice(index, price, alert, lowerSymbol);
+        updatePrice(index, price, alert, lowerSymbol, uniqueKey);
       }
     } catch (err) {
       console.error("Error fetching price:", err);
@@ -104,10 +108,12 @@ async function checkPrices() {
   }
 }
 
-function updatePrice(index, price, alert, symbol) {
+function updatePrice(index, price, alert, symbol, uniqueKey) {
   if (price) {
     document.getElementById(`live-${index}`).innerText = `Current: $${price}`;
-    if (price >= alert.price) {
+    if (price >= alert.price && !triggeredAlerts.includes(uniqueKey)) {
+      triggeredAlerts.push(uniqueKey);
+      localStorage.setItem('triggeredAlerts', JSON.stringify(triggeredAlerts));
       alertUser(symbol.toUpperCase(), price, alert.price);
     }
   } else {
@@ -116,10 +122,33 @@ function updatePrice(index, price, alert, symbol) {
 }
 
 function alertUser(symbol, livePrice, targetPrice) {
-  alert(`${symbol} has reached $${livePrice} (Target: $${targetPrice})`);
+  const popup = document.createElement("div");
+  popup.style.position = "fixed";
+  popup.style.top = "20%";
+  popup.style.left = "50%";
+  popup.style.transform = "translateX(-50%)";
+  popup.style.backgroundColor = "#222";
+  popup.style.color = "#fff";
+  popup.style.padding = "20px";
+  popup.style.border = "2px solid #f33";
+  popup.style.zIndex = 9999;
+  popup.innerHTML = `${symbol} has reached $${livePrice} (Target: $${targetPrice})<br><br>`;
+  const stopBtn = document.createElement("button");
+  stopBtn.innerText = "Dismiss Sound";
+  stopBtn.onclick = () => {
+    if (currentAudio) currentAudio.pause();
+    popup.remove();
+  };
+  popup.appendChild(stopBtn);
+  document.body.appendChild(popup);
+  playSound();
+}
+
+function playSound() {
   if (soundBase64) {
-    const audio = new Audio(soundBase64);
-    audio.play();
+    if (currentAudio) currentAudio.pause();
+    currentAudio = new Audio(soundBase64);
+    currentAudio.play();
   }
 }
 
