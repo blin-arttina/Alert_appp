@@ -1,0 +1,36 @@
+
+/* High Contrast Skin */
+.skin-high-contrast {
+  --background-color: #000000;
+  --box-color: #FFD700;
+  --button-color: #FF0000;
+  --text-color: #FFFFFF;
+}
+/* Aliens Skin */
+.skin-aliens {
+  --background-color: linear-gradient(#00FF00, #003300);
+  --box-color: rgba(0, 0, 0, 0.8);
+  --button-color: #39FF14;
+  --text-color: #FFFFFF;
+}
+/* Solar System Skin */
+.skin-solar-system {
+  --background-color: url('solar_system_bg.jpg') no-repeat center center fixed;
+  --box-color: rgba(0, 0, 0, 0.8);
+  --button-color: #FFA500;
+  --text-color: #FFFFFF;
+}
+/* Fire & Ice Skin */
+.skin-fire-ice {
+  --background-color: linear-gradient(to right, #FF4500, #00BFFF);
+  --box-color: rgba(0, 0, 0, 0.8);
+  --button-color: #FF4500;
+  --text-color: #FFFFFF;
+}
+/* Retro Neon Skin */
+.skin-retro-neon {
+  --background-color: linear-gradient(#8A2BE2, #FF69B4);
+  --box-color: rgba(0, 0, 0, 0.8);
+  --button-color: #FF1493;
+  --text-color: #FFFFFF;
+}
